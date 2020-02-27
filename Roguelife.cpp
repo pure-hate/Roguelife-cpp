@@ -1,58 +1,37 @@
 ﻿#include <SFML/Graphics.hpp>
 #include <iostream>
 #include <list>
+#include "images.h"
+
 using namespace sf;
 using std::cout;
 
-
-
-Image wallImage;
-Texture wallTexture;
-Sprite wallSprite;
-
-Image grassImage;
-Texture grassTexture;
-Sprite grassSprite;
-
-Image humanImage;
-Texture humanTexture;
-Sprite humanSprite;
-
 RenderWindow window(VideoMode(200, 200), "SFML works!");
 
-static class Human
-{
-public:
-    int x, y, hp, energy;
-    Sprite sprite;
-    void draw()
-    {
-        sprite.setPosition(x * 16, y * 16);
-        window.draw(sprite);
-    }
-};
+#include "HumanClass.h"
 
 
 
 
-static class Sprites {
-public:
-    void load()
-    {
-        wallImage.loadFromFile("images/wall.png");
-        wallTexture.loadFromImage(wallImage);
-        wallSprite.setTexture(wallTexture);
 
-        grassImage.loadFromFile("images/grass.png");
-        grassTexture.loadFromImage(grassImage);
-        grassSprite.setTexture(grassTexture);
-
-        humanImage.loadFromFile("images/human.png");
-        humanTexture.loadFromImage(humanImage);
-        humanSprite.setTexture(humanTexture);
-    }
-
-};
+//static class Sprites {
+//public:
+//    void load()
+//    {
+//        wallImage.loadFromFile("images/wall.png");
+//        wallTexture.loadFromImage(wallImage);
+//        wallSprite.setTexture(wallTexture);
+//
+//        grassImage.loadFromFile("images/grass.png");
+//        grassTexture.loadFromImage(grassImage);
+//        grassSprite.setTexture(grassTexture);
+//
+//        humanImage.loadFromFile("images/human.png");
+//        humanTexture.loadFromImage(humanImage);
+//        humanSprite.setTexture(humanTexture);
+//    }
+//
+//};
 
 template <int row, int col>
 void draw_map(int (&arr)[row][col])
