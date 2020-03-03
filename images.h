@@ -1,5 +1,5 @@
 #pragma once
-#include <SFML/Graphics.hpp>
+#include <SFML/Graphics.hpp>//вроде не обязательно, протестировать
 using namespace sf;
 
 Image wallImage;
@@ -13,6 +13,10 @@ Sprite grassSprite;
 Image humanImage;
 Texture humanTexture;
 Sprite humanSprite;
+
+Image playerImage;
+Texture playerTexture;
+Sprite playerSprite;
 
 static class Sprites {
 public:
@@ -29,6 +33,10 @@ public:
         humanImage.loadFromFile("images/human.png");
         humanTexture.loadFromImage(humanImage);
         humanSprite.setTexture(humanTexture);
+
+        playerImage.loadFromFile("images/player.png");
+        playerTexture.loadFromImage(playerImage);
+        playerSprite.setTexture(playerTexture);
     }
 
 };

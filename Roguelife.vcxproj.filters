@@ -23,7 +23,7 @@
     <ClInclude Include="images.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="HumanClass.h">
+    <ClInclude Include="components.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,37 +1,72 @@
 ﻿#include <SFML/Graphics.hpp>
 #include <iostream>
 #include <list>
+#include <unordered_map>
 #include "images.h"
 
 using namespace sf;
-using std::cout;
+using namespace std;
 
-RenderWindow window(VideoMode(200, 200), "SFML works!");
-
-#include "HumanClass.h"
+RenderWindow window(VideoMode(200, 200), "RogueLife");
 
 
+#include "components.h"
+
+class FPS
+{
+public:
+    /// @brief Constructor with initialization.
+    ///
+    FPS() : mFrame(0), mFps(0) {}
+
+    /// @brief Update the frame count.
+    /// 
+
+
+    /// @brief Get the current FPS count.
+    /// @return FPS count.
+    const unsigned int getFPS() const { return mFps; }
+
+private:
+    unsigned int mFrame;
+    unsigned int mFps;
+    sf::Clock mClock;
+
+public:
+    void update()
+    {
+        if (mClock.getElapsedTime().asSeconds() >= 1.f)
+        {
+            mFps = mFrame;
+            mFrame = 0;
+            mClock.restart();
+        }
+
+        ++mFrame;
+    }
+};
+FPS fps;
+
+using EntityID = int64_t;
+
+template <typename Type>
+using ComponentMap = unordered_map<EntityID, Type>;
+using Main_Sprites = ComponentMap<Main_Sprite>;
+using Positions = ComponentMap<Position>;
+using Healths = ComponentMap<Health>;
+using Players = ComponentMap<Playable>;
+
+struct Components
+{
+    Positions positions;
+    Main_Sprites main_sprites;
+    Healths healths;
+    Players players;
+};
 
 
 
-//static class Sprites {
-//public:
-//    void load()
-//    {
-//        wallImage.loadFromFile("images/wall.png");
-//        wallTexture.loadFromImage(wallImage);
-//        wallSprite.setTexture(wallTexture);
-//
-//        grassImage.loadFromFile("images/grass.png");
-//        grassTexture.loadFromImage(grassImage);
-//        grassSprite.setTexture(grassTexture);
-//
-//        humanImage.loadFromFile("images/human.png");
-//        humanTexture.loadFromImage(humanImage);
-//        humanSprite.setTexture(humanTexture);
-//    }
-//
-//};
+
 
 template <int row, int col>
 void draw_map(int (&arr)[row][col])
@@ -62,26 +97,29 @@ int main()
     Sprites allsprite;
     allsprite.load();
 
-    Human trader;
-    trader.x = 1;
-    trader.y = 2;
-    trader.sprite = humanSprite;
+    Components c;
 
-    Human trader2;
-    trader2.x = 1;
-    trader2.y = 3;
-    trader2.sprite = humanSprite;
+    EntityID newID = 1;
+    c.positions[newID] = Position{ 4, 4 };
+    c.healths[newID] = Health{ 100, 100 };
+    c.main_sprites[newID] = Main_Sprite{ playerSprite };
+    c.players[newID] = Playable{ true };
+    int player = 1;
+    
 
-    std::list <Human> mlist;
+    newID = 15;
+    c.positions[newID] = Position{ 1, 1 };
+    c.healths[newID] = Health{ 100, 100 };
+    c.main_sprites [ newID ] = Main_Sprite{ humanSprite };
 
-    mlist.push_back(trader);
-    mlist.push_back(trader2);
+    newID = 16;
+    c.positions[newID] = Position{ 2, 2 };
+    c.healths[newID] = Health{ 100, 100 };
+    c.main_sprites[newID] = Main_Sprite{ humanSprite };
 
-
+ 
     int map[5][5] = { {1, 1, 1, 1, 1}, {1, 0, 0, 0, 1}, {1, 0, 0, 0, 1}, {1, 0, 0, 0, 1}, {1, 1, 1, 1, 1}, };
     
-    CircleShape shape(50.f);
-    shape.setFillColor(Color::Green);
     
 
     while (window.isOpen()) //главный цикл
@@ -93,25 +131,43 @@ int main()
                 window.close();
         }
 
-        if (Keyboard::isKeyPressed(Keyboard::Left)) { shape.move(-0.1, 0); } //первая координата Х отрицательна =>идём влево
-        if (Keyboard::isKeyPressed(Keyboard::Right)) { shape.move(0.1, 0); } //первая координата Х положительна =>идём вправо
-        if (Keyboard::isKeyPressed(Keyboard::Up)) { shape.move(0, -0.1); } //вторая координата (У) отрицательна =>идём вверх (вспоминаем из предыдущих уроков почему именно вверх, а не вниз)
-        if (Keyboard::isKeyPressed(Keyboard::Down)) { shape.move(0, 0.1); } //вторая координата (У) положительна =>идём вниз (если не понятно почему именно вниз - смотрим предыдущие уроки)
+        //движение персонажа с ид1
+        if (Keyboard::isKeyPressed(Keyboard::Down)) { c.positions[player].y += 1; }
+        if (Keyboard::isKeyPressed(Keyboard::Up)) { c.positions[player].y -= 1; }
+        if (Keyboard::isKeyPressed(Keyboard::Left)) { c.positions[player].x -= 1; }
+        if (Keyboard::isKeyPressed(Keyboard::Right)) { c.positions[player].x += 1; }
 
-
+        //очистим экран перед отрисовкой
         window.clear();
-        
-        draw_map(map);
-        window.draw(shape);
 
-        //отрисовка людей
-        for (auto iter = mlist.begin(); iter != mlist.end(); iter++)
+        //рисуем сначала карту
+        draw_map(map);
+
+        //проделывание одной и той же операции со всем списком
+
+        //отрисовка всех персонажей
+        for (auto& item : c.main_sprites)
         {
-            (*iter).draw();
+            int &x = c.positions[item.first].x;
+            int &y = c.positions[item.first].y;
+            Sprite& sprite = item.second.main_sprite1;
+
+            sprite.setPosition(x*16,y*16);
+            window.draw(sprite);
+
         }
 
-
+        //и наконец выведем все на экран
         window.display();
+
+        //счетчик фепеса
+        fps.update();
+        
+        cout << (fps.getFPS()) << "\n";
+
+        //window.setTitle(ss.str());
+
+
     }
     return 0;
 }
