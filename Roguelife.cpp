@@ -3,6 +3,7 @@
 #include <list>
 #include <unordered_map>
 #include "images.h"
+#include "map.h"
 
 using namespace sf;
 using namespace std;
@@ -15,16 +16,13 @@ RenderWindow window(VideoMode(200, 200), "RogueLife");
 class FPS
 {
 public:
-    /// @brief Constructor with initialization.
-    ///
+    
     FPS() : mFrame(0), mFps(0) {}
 
-    /// @brief Update the frame count.
-    /// 
+    
 
 
-    /// @brief Get the current FPS count.
-    /// @return FPS count.
+    
     const unsigned int getFPS() const { return mFps; }
 
 private:
@@ -97,6 +95,7 @@ int main()
     Sprites allsprite;
     allsprite.load();
 
+    window.setFramerateLimit(30);
     Components c;
 
     EntityID newID = 1;
@@ -118,8 +117,7 @@ int main()
     c.main_sprites[newID] = Main_Sprite{ humanSprite };
 
  
-    int map[5][5] = { {1, 1, 1, 1, 1}, {1, 0, 0, 0, 1}, {1, 0, 0, 0, 1}, {1, 0, 0, 0, 1}, {1, 1, 1, 1, 1}, };
-    
+    loadmap();
     
 
     while (window.isOpen()) //главный цикл
@@ -141,7 +139,7 @@ int main()
         window.clear();
 
         //рисуем сначала карту
-        draw_map(map);
+        draw_map(global_map);
 
         //проделывание одной и той же операции со всем списком
 
@@ -164,8 +162,7 @@ int main()
         fps.update();
         
         cout << (fps.getFPS()) << "\n";
-
-        //window.setTitle(ss.str());
+        
 
 
     }
