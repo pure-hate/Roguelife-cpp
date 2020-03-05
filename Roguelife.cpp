@@ -1,9 +1,11 @@
 ﻿#include <SFML/Graphics.hpp>
 #include <iostream>
+#include <stdio.h>
 #include <list>
 #include <unordered_map>
 #include "images.h"
 #include "map.h"
+
 
 using namespace sf;
 using namespace std;
@@ -45,6 +47,7 @@ public:
 };
 FPS fps;
 
+/*
 using EntityID = int64_t;
 
 template <typename Type>
@@ -52,17 +55,15 @@ using ComponentMap = unordered_map<EntityID, Type>;
 using Main_Sprites = ComponentMap<Main_Sprite>;
 using Positions = ComponentMap<Position>;
 using Healths = ComponentMap<Health>;
-using Players = ComponentMap<Playable>;
 
 struct Components
 {
     Positions positions;
     Main_Sprites main_sprites;
     Healths healths;
-    Players players;
 };
 
-
+*/
 
 
 
@@ -102,16 +103,15 @@ int main()
     c.positions[newID] = Position{ 4, 4 };
     c.healths[newID] = Health{ 100, 100 };
     c.main_sprites[newID] = Main_Sprite{ playerSprite };
-    c.players[newID] = Playable{ true };
     int player = 1;
     
 
-    newID = 15;
+    newID = 2;
     c.positions[newID] = Position{ 1, 1 };
     c.healths[newID] = Health{ 100, 100 };
     c.main_sprites [ newID ] = Main_Sprite{ humanSprite };
 
-    newID = 16;
+    newID = 3;
     c.positions[newID] = Position{ 2, 2 };
     c.healths[newID] = Health{ 100, 100 };
     c.main_sprites[newID] = Main_Sprite{ humanSprite };
@@ -135,6 +135,56 @@ int main()
         if (Keyboard::isKeyPressed(Keyboard::Left)) { c.positions[player].x -= 1; }
         if (Keyboard::isKeyPressed(Keyboard::Right)) { c.positions[player].x += 1; }
 
+        //пробуем реализовать сохранения
+
+        if (Keyboard::isKeyPressed(Keyboard::F6)) 
+        {
+            for (auto& item : c.positions)
+            {
+                ofstream outfile;
+                outfile.open("Out.txt");
+                for (int i = 0; i < 3; ++i)
+               
+
+                for (auto& item : c.main_sprites)
+                {
+                    outfile << item.first << endl;
+
+                   
+                }
+                for (auto& item : c.positions)
+                {
+                    outfile << item.first << " " << item.second.x << " " << item.second.y << endl;
+
+                }
+                for (auto& item : c.healths)  
+                {
+                    outfile << item.first << " " << item.second.current << " " << item.second.max << endl;
+
+                }
+                outfile.close();
+
+                //FILE* stream;
+                //fopen_s(&stream,"test.txt", "w");
+                //fwrite(&c, sizeof(c), sizeof(c.positions),  stream);
+                //fclose(stream);
+            }
+            
+        }
+
+        if (Keyboard::isKeyPressed(Keyboard::F7))
+        {
+            for (auto& item : c.positions)
+            {
+                FILE* stream;
+                //char buffer[] = { 'x' , 'y' , 'z' };
+                fopen_s(&stream, "test.txt", "r");
+                fread(&c, sizeof(c), sizeof(c.positions), stream);
+                fclose(stream);
+            }
+
+        }
+
         //очистим экран перед отрисовкой
         window.clear();
 
@@ -143,7 +193,7 @@ int main()
 
         //проделывание одной и той же операции со всем списком
 
-        //отрисовка всех персонажей
+        //отрисовка всех персонажей с main_sprites
         for (auto& item : c.main_sprites)
         {
             int &x = c.positions[item.first].x;
@@ -160,8 +210,8 @@ int main()
 
         //счетчик фепеса
         fps.update();
-        
-        cout << (fps.getFPS()) << "\n";
+        string str = to_string(fps.getFPS());
+        window.setTitle(str);
         
 
 

@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
 
-int n, i = 10;
+//int n, i = 10;
 int global_map[5][5];
 
 void loadmap()
