@@ -1,7 +1,7 @@
 sprites
 1 playerSprite
-2 humanSprite
-3 humanSprite
+2 playerSprite
+3 playerSprite
 positions
 1 4 4
 2 1 1

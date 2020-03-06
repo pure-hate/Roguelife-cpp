@@ -122,7 +122,7 @@ int main()
         //пробуем реализовать сохранения
 
         if (Keyboard::isKeyPressed(Keyboard::F6)) 
-        {
+        { 
             ofstream outfile;
             outfile.open("Out.txt");
                 outfile << "sprites" << endl;
@@ -143,12 +143,15 @@ int main()
                 outfile << "end" << endl;
 
                 outfile.close();
-            
+           
             
         }
 
         if (Keyboard::isKeyPressed(Keyboard::F7))
+           
         {
+            
+
             ifstream f("Out.txt");
 
             string s;
@@ -167,6 +170,8 @@ int main()
 
                     std::string part2;
                     tempstring >> part2;
+
+                    c.main_sprites[stoi(part1)] = Main_Sprite{ part2 };
                     
                     cout << "ID " << part1 << " Sprite " << part2 << endl;
 
@@ -177,19 +182,49 @@ int main()
 
                 while (s != "healths")
                 {
-                    cout << s << endl;  
+                    tempstring.clear();
+                    tempstring << s;
+
+                    std::string part1;
+                    tempstring >> part1;
+
+                    std::string part2;
+                    tempstring >> part2;
+
+                    std::string part3;
+                    tempstring >> part3;
+
+                    cout << "ID " << part1 << " X " << part2 << " y " << part3 << endl;
+
+                    c.positions[stoi(part1)] = Position{ stoi(part2), stoi(part3) };
+
                     getline(f, s);
                 }
                 getline(f, s);
 
                 while (s != "end")
                 {
+                    tempstring.clear();
+                    tempstring << s;
+
+                    std::string part1;
+                    tempstring >> part1;
+
+                    std::string part2;
+                    tempstring >> part2;
+
+                    std::string part3;
+                    tempstring >> part3;
+
+                    c.healths[stoi(part1)] = Health{ stoi(part2), stoi(part3) };
+
                     cout << s << endl;
                     getline(f, s);
                 }
                 getline(f, s);
                 f.close();
-
+                
+           
         }
         //очистим экран перед отрисовкой
         window.clear();
