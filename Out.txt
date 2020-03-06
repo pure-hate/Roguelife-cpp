@@ -1,1 +1,13 @@
-1/n2/n3/n1/n2/n3/n1/n2/n3/n1 4 4/n2 1 1/n3 2 2/n
+sprites
+1 playerSprite
+2 humanSprite
+3 humanSprite
+positions
+1 4 4
+2 1 1
+3 2 2
+healths
+1 100 100
+2 100 100
+3 100 100
+end

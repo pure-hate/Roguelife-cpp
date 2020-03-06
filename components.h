@@ -8,7 +8,7 @@ struct Position
 
 struct Main_Sprite
 {
-	Sprite main_sprite1;
+	string main_sprite1;
 };
 
 struct Health

@@ -22,5 +22,6 @@ void loadmap()
 				std::cout << global_map[i][j] << "\t";
 			std::cout << "\n";
 		}
+		f.close();
 
 }
