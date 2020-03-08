@@ -157,10 +157,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="components.h" />
+    <ClInclude Include="findpath.h" />
     <ClInclude Include="images.h" />
     <ClInclude Include="map.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-  <ImportGroup Label="ExtensionTargets">
-  </ImportGroup>
+  <ImportGroup Label="ExtensionTargets" />
 </Project>

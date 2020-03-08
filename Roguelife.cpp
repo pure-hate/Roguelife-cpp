@@ -6,6 +6,8 @@
 #include <unordered_map>
 #include "images.h"
 #include "map.h"
+#include "findpath.h"
+
 
 
 using namespace sf;
@@ -99,6 +101,10 @@ int main()
     c.positions[newID] = Position{ 2, 2 };
     c.healths[newID] = Health{ 100, 100 };
     c.main_sprites[newID] = Main_Sprite{ "humanSprite" };
+    Point i;                         //
+    i.x = 3; i.y = 3;                //
+    c.paths[newID].path.push_back(i);//добавляем точку в paths
+    
 
  
     loadmap();

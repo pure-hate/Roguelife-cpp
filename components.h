@@ -1,10 +1,27 @@
 #pragma once
 
+#include <vector>
+
+struct Point
+{
+	int x, y;
+};
+
+
 struct Position
 {
 	int x, y;
 };
 
+struct State
+{
+	string state;
+};
+
+struct Path
+{
+	std::vector<Point> path;
+};
 
 struct Main_Sprite
 {
@@ -26,10 +43,14 @@ using ComponentMap = unordered_map<EntityID, Type>;
 using Main_Sprites = ComponentMap<Main_Sprite>;
 using Positions = ComponentMap<Position>;
 using Healths = ComponentMap<Health>;
+using States = ComponentMap<State>;
+using Paths = ComponentMap<Path>;
 
 struct Components
 {
 	Positions positions;
 	Main_Sprites main_sprites;
 	Healths healths;
+	States states;
+	Paths paths;
 };
