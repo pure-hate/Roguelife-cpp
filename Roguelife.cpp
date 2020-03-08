@@ -102,7 +102,10 @@ int main()
     c.healths[newID] = Health{ 100, 100 };
     c.main_sprites[newID] = Main_Sprite{ "humanSprite" };
     Point i;                         //
-    i.x = 3; i.y = 3;                //
+    i.x = 4; i.y = 4;                //
+    c.paths[newID].path.push_back(i);//добавляем точку в paths
+                             //
+    i.x = 2; i.y = 2;                //
     c.paths[newID].path.push_back(i);//добавляем точку в paths
     
 
@@ -145,6 +148,17 @@ int main()
                 for (auto& item : c.healths)  
                 {
                     outfile << item.first << " " << item.second.current << " " << item.second.max << endl;
+                }
+                outfile << "paths" << endl;
+                for (auto& item : c.paths)
+                {
+                    outfile << item.first << " ";
+                    for (auto& elem : item.second.path) {
+
+                        outfile << elem.x << " " << elem.y << " ";
+
+                    }
+                    outfile << endl;
                 }
                 outfile << "end" << endl;
 

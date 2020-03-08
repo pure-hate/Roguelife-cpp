@@ -1,7 +1,7 @@
 sprites
 1 playerSprite
-2 playerSprite
-3 playerSprite
+2 humanSprite
+3 humanSprite
 positions
 1 4 4
 2 1 1
@@ -10,4 +10,6 @@ healths
 1 100 100
 2 100 100
 3 100 100
+paths
+3 4 4 2 2 
 end
