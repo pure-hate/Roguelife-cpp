@@ -82,7 +82,7 @@ int main()
     Sprites allsprite;
     allsprite.load();
 
-    window.setFramerateLimit(30);
+    window.setFramerateLimit(1);
     Components c;
 
     EntityID newID = 1;
@@ -101,19 +101,24 @@ int main()
     c.positions[newID] = Position{ 2, 2 };
     c.healths[newID] = Health{ 100, 100 };
     c.main_sprites[newID] = Main_Sprite{ "humanSprite" };
-    Point i;                         //
-    i.x = 4; i.y = 4;                //
+
+    c.traders[newID] = Trader{ "grocery" };
+
+    Point i; i.x = 4; i.y = 4;                //
     c.paths[newID].path.push_back(i);//добавляем точку в paths
-                             //
-    i.x = 2; i.y = 2;                //
+    i.x = 3; i.y = 3;
+    c.paths[newID].path.push_back(i);//добавляем точку в paths
+    i.x = 2; i.y = 2;                
+    c.paths[newID].path.push_back(i);//добавляем точку в paths
+    i.x = 1; i.y = 1;
     c.paths[newID].path.push_back(i);//добавляем точку в paths
     
 
  
     loadmap();
     
-
-    while (window.isOpen()) //главный цикл
+//главный цикл
+    while (window.isOpen()) 
     {
         Event event;
         while (window.pollEvent(event))
@@ -129,7 +134,6 @@ int main()
         if (Keyboard::isKeyPressed(Keyboard::Right)) { c.positions[player].x += 1; }
 
         //пробуем реализовать сохранения
-
         if (Keyboard::isKeyPressed(Keyboard::F6)) 
         { 
             ofstream outfile;
@@ -168,6 +172,7 @@ int main()
             
         }
 
+        //загрузка
         if (Keyboard::isKeyPressed(Keyboard::F7))
            
         {
@@ -286,6 +291,7 @@ int main()
                 
            
         }
+        
         //очистим экран перед отрисовкой
         window.clear();
 
@@ -293,6 +299,28 @@ int main()
         draw_map(global_map);
 
         //проделывание одной и той же операции со всем списком
+
+        for (auto& item : c.traders)
+        {   
+            if (c.paths[item.first].path.empty() == false)
+            {
+                int& x = c.positions[item.first].x;
+                int& y = c.positions[item.first].y;
+                vector<Point>& path = c.paths[item.first].path;
+
+
+
+                x = path[0].x;
+                y = path[0].y;
+                
+                cout << x << " " << y << " " << path[0].x << " " << path[0].y;
+                
+                path.erase(path.begin());
+
+                //path.shrink_to_fit();
+                
+            }
+        }
 
         //отрисовка всех персонажей с main_sprites
         for (auto& item : c.main_sprites)

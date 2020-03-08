@@ -18,6 +18,11 @@ struct State
 	string state;
 };
 
+struct Trader
+{
+	string type;
+};
+
 struct Path
 {
 	std::vector<Point> path;
@@ -45,6 +50,7 @@ using Positions = ComponentMap<Position>;
 using Healths = ComponentMap<Health>;
 using States = ComponentMap<State>;
 using Paths = ComponentMap<Path>;
+using Traders = ComponentMap<Trader>;
 
 struct Components
 {
@@ -53,4 +59,5 @@ struct Components
 	Healths healths;
 	States states;
 	Paths paths;
+	Traders traders;
 };
