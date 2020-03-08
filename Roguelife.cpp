@@ -158,6 +158,7 @@ int main()
                         outfile << elem.x << " " << elem.y << " ";
 
                     }
+                    outfile << " endpath";
                     outfile << endl;
                 }
                 outfile << "end" << endl;
@@ -222,7 +223,7 @@ int main()
                 }
                 getline(f, s);
 
-                while (s != "end")
+                while (s != "paths")
                 {
                     tempstring.clear();
                     tempstring << s;
@@ -241,6 +242,45 @@ int main()
                     cout << s << endl;
                     getline(f, s);
                 }
+                getline(f, s);
+
+                while (s != "end")
+                {
+                    tempstring.clear();
+                    tempstring << s;
+
+                    std::string part1;
+                    tempstring >> part1;
+                    
+                    c.paths[stoi(part1)].path.clear();
+
+                    std::string i1,i2;
+                    while (true)
+                    {
+                        tempstring >> i1;
+                        if (i1 == "endpath" )
+                        {
+                            break;
+                        }
+                        tempstring >> i2;
+                        
+                        Point b;                         //
+                        b.x = stoi(i1); b.y = stoi(i2);                //
+                        c.paths[stoi(part1)].path.push_back(b);
+
+                        cout<<"x"<<i1<< "y"<<i2<<endl;
+                    }
+
+                    
+
+
+                    
+                   
+
+                    //cout << s << endl;
+                    getline(f, s);
+                }
+
                 getline(f, s);
                 f.close();
                 
