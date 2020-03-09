@@ -7,16 +7,24 @@
 #include "images.h"
 #include "map.h"
 #include "findpath.h"
+#include "json.hpp"
+
+
+
+
 
 
 
 using namespace sf;
 using namespace std;
+using namespace json;
 
-RenderWindow window(VideoMode(200, 200), "RogueLife");
+RenderWindow window(VideoMode(640, 480), "RogueLife");
+sf::View view;
 
 
 #include "components.h"
+#include "save.h"
 
 class FPS
 {
@@ -50,15 +58,12 @@ public:
 };
 //FPS fps;
 
-
-
-
 template <int row, int col>
 void draw_map(int (&arr)[row][col])
 {
-    for (int i = 0; i < 5; i++) //переключение по строкам
+    for (int i = 0; i < 20; i++) //переключение по строкам
     {
-        for (int j = 0; j < 5; j++)// переключение по столбцам
+        for (int j = 0; j < 20; j++)// переключение по столбцам
         {
             if (arr[i][j] == 1)
             {
@@ -103,19 +108,22 @@ int main()
     c.main_sprites[newID] = Main_Sprite{ "humanSprite" };
 
     c.traders[newID] = Trader{ "grocery" };
+    c.states[newID] = State{ "Idle" };
 
-    Point i; i.x = 4; i.y = 4;                //
+    Point i; i.x = 4; i.y = 4;                
     c.paths[newID].path.push_back(i);//добавляем точку в paths
     i.x = 3; i.y = 3;
     c.paths[newID].path.push_back(i);//добавляем точку в paths
     i.x = 2; i.y = 2;                
     c.paths[newID].path.push_back(i);//добавляем точку в paths
-    i.x = 1; i.y = 1;
-    c.paths[newID].path.push_back(i);//добавляем точку в paths
+    
     
 
  
     loadmap();
+
+    //view.setViewport(sf::FloatRect(0, 0, 0.8f, 0.8f));
+
     
 //главный цикл
     while (window.isOpen()) 
@@ -128,171 +136,51 @@ int main()
         }
 
         //движение персонажа с ид1
-        if (Keyboard::isKeyPressed(Keyboard::Down)) { c.positions[player].y += 1; }
-        if (Keyboard::isKeyPressed(Keyboard::Up)) { c.positions[player].y -= 1; }
-        if (Keyboard::isKeyPressed(Keyboard::Left)) { c.positions[player].x -= 1; }
-        if (Keyboard::isKeyPressed(Keyboard::Right)) { c.positions[player].x += 1; }
+        if (Keyboard::isKeyPressed(Keyboard::Down)) 
+        {
+            if (global_map[c.positions[player].x][c.positions[player].y + 1] == 0) 
+            { c.positions[player].y += 1; }
+        }
+        if (Keyboard::isKeyPressed(Keyboard::Up)) 
+        {
+            if (global_map[c.positions[player].x][c.positions[player].y - 1] == 0)
+            c.positions[player].y -= 1; 
+        }
+        if (Keyboard::isKeyPressed(Keyboard::Left)) { 
+            if (global_map[c.positions[player].x-1][c.positions[player].y] == 0)
+            c.positions[player].x -= 1; 
+        }
+        if (Keyboard::isKeyPressed(Keyboard::Right)) { 
+            if (global_map[c.positions[player].x+1][c.positions[player].y ] == 0)
+            c.positions[player].x += 1;
+        }
+
+        
 
         //пробуем реализовать сохранения
         if (Keyboard::isKeyPressed(Keyboard::F6)) 
         { 
-            ofstream outfile;
-            outfile.open("Out.txt");
-                outfile << "sprites" << endl;
-                for (auto& item : c.main_sprites)
-                {
-                    outfile << item.first << " " << item.second.main_sprite1 << endl;
-                }
-                outfile << "positions" << endl;
-                for (auto& item : c.positions)
-                {
-                    outfile << item.first << " " << item.second.x << " " << item.second.y << endl;
-                }
-                outfile << "healths" << endl;
-                for (auto& item : c.healths)  
-                {
-                    outfile << item.first << " " << item.second.current << " " << item.second.max << endl;
-                }
-                outfile << "paths" << endl;
-                for (auto& item : c.paths)
-                {
-                    outfile << item.first << " ";
-                    for (auto& elem : item.second.path) {
 
-                        outfile << elem.x << " " << elem.y << " ";
+            Components& c_ptr = c;
+            save(c_ptr);
 
-                    }
-                    outfile << " endpath";
-                    outfile << endl;
-                }
-                outfile << "end" << endl;
-
-                outfile.close();
-           
-            
         }
 
         //загрузка
         if (Keyboard::isKeyPressed(Keyboard::F7))
            
         {
-            
-
-            ifstream f("Out.txt");
-
-            string s;
-            stringstream tempstring;
-            getline(f, s);
-            getline(f, s);
-            
-            
-                while (s != "positions")
-                {   
-                    tempstring.clear();
-                    tempstring << s;
-
-                    std::string part1;
-                    tempstring >> part1;
-
-                    std::string part2;
-                    tempstring >> part2;
-
-                    c.main_sprites[stoi(part1)] = Main_Sprite{ part2 };
-                    
-                    cout << "ID " << part1 << " Sprite " << part2 << endl;
-
-                    getline(f, s);
-
-                }
-                getline(f, s);
-
-                while (s != "healths")
-                {
-                    tempstring.clear();
-                    tempstring << s;
-
-                    std::string part1;
-                    tempstring >> part1;
-
-                    std::string part2;
-                    tempstring >> part2;
-
-                    std::string part3;
-                    tempstring >> part3;
-
-                    cout << "ID " << part1 << " X " << part2 << " y " << part3 << endl;
-
-                    c.positions[stoi(part1)] = Position{ stoi(part2), stoi(part3) };
-
-                    getline(f, s);
-                }
-                getline(f, s);
-
-                while (s != "paths")
-                {
-                    tempstring.clear();
-                    tempstring << s;
-
-                    std::string part1;
-                    tempstring >> part1;
-
-                    std::string part2;
-                    tempstring >> part2;
-
-                    std::string part3;
-                    tempstring >> part3;
-
-                    c.healths[stoi(part1)] = Health{ stoi(part2), stoi(part3) };
-
-                    cout << s << endl;
-                    getline(f, s);
-                }
-                getline(f, s);
-
-                while (s != "end")
-                {
-                    tempstring.clear();
-                    tempstring << s;
-
-                    std::string part1;
-                    tempstring >> part1;
-                    
-                    c.paths[stoi(part1)].path.clear();
-
-                    std::string i1,i2;
-                    while (true)
-                    {
-                        tempstring >> i1;
-                        if (i1 == "endpath" )
-                        {
-                            break;
-                        }
-                        tempstring >> i2;
-                        
-                        Point b;                         //
-                        b.x = stoi(i1); b.y = stoi(i2);                //
-                        c.paths[stoi(part1)].path.push_back(b);
-
-                        cout<<"x"<<i1<< "y"<<i2<<endl;
-                    }
-
-                    
-
-
-                    
-                   
-
-                    //cout << s << endl;
-                    getline(f, s);
-                }
-
-                getline(f, s);
-                f.close();
-                
+            Components& c_ptr = c;
+            load(c_ptr);
            
         }
         
         //очистим экран перед отрисовкой
+        
+        view.setCenter(c.positions[player].x*16, c.positions[player].y*16);
+        view.reset(sf::FloatRect(0.f, 0.f, 640.f, 480.f));
+
+        window.setView(view);
         window.clear();
 
         //рисуем сначала карту
@@ -317,8 +205,17 @@ int main()
                 
                 path.erase(path.begin());
 
-                //path.shrink_to_fit();
                 
+                
+            }
+            else
+            {
+                if (c.states[item.first].state == "Idle")
+                {
+                    vector<Point>& new_path = c.paths[item.first].path;
+                    SearchWay(global_map, new_path , c.positions[item.first].x, c.positions[item.first].y, 10, 10);
+                    
+                }
             }
         }
 
@@ -341,6 +238,7 @@ int main()
             }
 
         }
+        
 
         //и наконец выведем все на экран
         window.display();

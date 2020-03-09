@@ -1,13 +1,13 @@
 #include <iostream>
 #include <fstream>
 
-//int n, i = 10;
-int global_map[5][5];
+
+int global_map[20][20];
 
 void loadmap()
 {
 
-		const int n = 5, m = 5;
+		const int n = 20, m = 20;
 		
 		std::ifstream f("map.txt");
 		for (int i = 0; i < n; i++) {

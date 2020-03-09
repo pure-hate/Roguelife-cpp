@@ -159,7 +159,10 @@
     <ClInclude Include="components.h" />
     <ClInclude Include="findpath.h" />
     <ClInclude Include="images.h" />
+    <ClInclude Include="json.hpp" />
     <ClInclude Include="map.h" />
+    <ClInclude Include="point.h" />
+    <ClInclude Include="save.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

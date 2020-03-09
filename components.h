@@ -1,11 +1,9 @@
 #pragma once
 
+#include "point.h"
 #include <vector>
 
-struct Point
-{
-	int x, y;
-};
+
 
 
 struct Position
@@ -26,6 +24,15 @@ struct Trader
 struct Path
 {
 	std::vector<Point> path;
+
+	void add(int x, int y)
+	{
+		Point b;
+		b.x = x, b.y = y;
+		
+		path.push_back(b);
+	}
+
 };
 
 struct Main_Sprite

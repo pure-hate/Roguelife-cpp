@@ -1,7 +1,13 @@
 #pragma once//void SearchWay(int x, int y, int x_to, int y_to)
-template <class T>
-void SearchWay(T* map, int x, int y, int x_to, int y_to)
+
+#include "point.h"
+
+template <class T, class S>
+void SearchWay(T* map, S& path , int x, int y, int x_to, int y_to)
 {
+
+
+
 
 	const int size = 50;
 	int matrix[size][size][3];
@@ -111,8 +117,16 @@ void SearchWay(T* map, int x, int y, int x_to, int y_to)
 
 		while (matrix[_i][_j][0] != 0)
 		{
-			std::cout << std::endl;
-			std::cout << _i << " " << _j << std::endl;
+			//std::cout << std::endl;
+			//std::cout << _i << " " << _j << std::endl;
+
+			//Point point2;
+			//point2.x = _i;
+			Point point;
+			point.x = _i;
+			point.y = _j;
+			
+			path.push_back(point);
 			// тут ваш код где  записываем значение клеток и шагаем дальше к началу
 // записывать надо _i _J	
 			int li = matrix[_i][_j][1];
