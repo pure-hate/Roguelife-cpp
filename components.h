@@ -1,6 +1,8 @@
 #pragma once
 
 #include "point.h"
+#include "Items.h"
+#include <stdarg.h>
 #include <vector>
 
 
@@ -9,6 +11,16 @@
 struct Position
 {
 	int x, y;
+};
+
+struct Name
+{
+	string name;
+};
+
+struct Money
+{
+	int amount;
 };
 
 struct State
@@ -20,6 +32,28 @@ struct Trader
 {
 	string type;
 };
+
+struct Inventory
+{
+	std::vector<Item> inv;
+
+
+	template <typename T>
+	void Add(const char* str, std::pair<const char*,T*> param)
+	{
+		Item a;
+		a.set("Name", str);
+		
+		
+			a.set(param.first, param.second);
+		
+		
+		inv.push_back(a);
+		//cout << param.first << param.second;
+	
+	}
+};
+
 
 struct Path
 {
@@ -58,6 +92,9 @@ using Healths = ComponentMap<Health>;
 using States = ComponentMap<State>;
 using Paths = ComponentMap<Path>;
 using Traders = ComponentMap<Trader>;
+using Names = ComponentMap<Name>;
+using Moneys = ComponentMap<Money>;
+using Inventories = ComponentMap<Inventory>;
 
 struct Components
 {
@@ -67,4 +104,7 @@ struct Components
 	States states;
 	Paths paths;
 	Traders traders;
+	Names names;
+	Moneys moneys;
+	Inventories inventories;
 };

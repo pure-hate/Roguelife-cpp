@@ -1,13 +1,22 @@
 #pragma once
+#include <fstream>
+#include <sstream>
+#include <stdio.h>
 
-void save(Components &c)
+#include "json.hpp"
+#include "save.h"
+
+using namespace std;
+using namespace json;
+
+void save(Components& c)
 {
 
     json::JSON obj;
 
     for (auto& item : c.main_sprites)
     {
-        
+
         obj[to_string(item.first)]["MainSprites"] = item.second.main_sprite1;
     }
 
@@ -21,6 +30,18 @@ void save(Components &c)
     {
 
         obj[to_string(item.first)]["Trader"] = item.second.type;
+    }
+
+    for (auto& item : c.names)
+    {
+
+        obj[to_string(item.first)]["Name"] = item.second.name;
+    }
+
+    for (auto& item : c.moneys)
+    {
+
+        obj[to_string(item.first)]["Money"] = item.second.amount;
     }
 
 
@@ -45,7 +66,7 @@ void save(Components &c)
         {
             obj[to_string(item.first)]["Path"].append(elem.x, elem.y);
         }
-        
+
     }
 
 
@@ -86,18 +107,34 @@ void load(Components& c)
         //std::cout << j.first << "\n"; 
 
         if (j.second.hasKey("MainSprites")) //проверяем наличие ключей
-        {   
-            
+        {
+
             c.main_sprites[stoi(j.first)].main_sprite1 = obj[j.first]["MainSprites"].ToString();
-            
+
         }
 
         if (j.second.hasKey("State")) //проверяем наличие ключей
         {
-            
+
             c.states[stoi(j.first)].state = obj[j.first]["State"].ToString();
 
         }
+
+        if (j.second.hasKey("Name")) //проверяем наличие ключей
+        {
+
+            c.states[stoi(j.first)].state = obj[j.first]["Name"].ToString();
+
+        }
+
+        if (j.second.hasKey("Money")) //проверяем наличие ключей
+        {
+
+            c.states[stoi(j.first)].state = obj[j.first]["Money"].ToString();
+
+        }
+
+
 
         if (j.second.hasKey("Trader")) //проверяем наличие ключей
         {
@@ -139,27 +176,13 @@ void load(Components& c)
 
             while (!s.empty())
             {
-            b.x = s[0];
-            s.erase(s.begin());
-            b.y = s[0];
-            s.erase(s.begin());
-            c.paths[stoi(j.first)].path.push_back(b);
+                b.x = s[0];
+                s.erase(s.begin());
+                b.y = s[0];
+                s.erase(s.begin());
+                c.paths[stoi(j.first)].path.push_back(b);
             }
-           
-
-            
         }
 
-        /* дергать целый массив
-        for (auto& i : j.second["Health"].ArrayRange())
-            {
-                std::cout << "Value: " << i << "\n";
-            }
-        */
-
-
-        //std::cout << j.second["Lol"][0] << " " << j.second["Lol"][1] <<"\n";
-
     }
-
 }

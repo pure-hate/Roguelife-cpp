@@ -8,6 +8,7 @@
 #include "map.h"
 #include "findpath.h"
 #include "json.hpp"
+#include "date.h"
 
 
 
@@ -109,6 +110,12 @@ int main()
 
     c.traders[newID] = Trader{ "grocery" };
     c.states[newID] = State{ "Idle" };
+    c.names[newID] = Name{ "Вася" };
+    c.moneys[newID] = Money{ 100 };
+
+    c.inventories[newID] = Inventory{};
+    c.inventories[newID].Add("Beer", pair("Marka", "Zhiguli"));
+
 
     Point i; i.x = 4; i.y = 4;                
     c.paths[newID].path.push_back(i);//добавляем точку в paths
@@ -117,7 +124,7 @@ int main()
     i.x = 2; i.y = 2;                
     c.paths[newID].path.push_back(i);//добавляем точку в paths
     
-    
+    Date current_date = { 0,0,1,1,2000 };
 
  
     loadmap();
@@ -186,6 +193,8 @@ int main()
         //рисуем сначала карту
         draw_map(global_map);
 
+        current_date.increase();
+        current_date.get_time();
         //проделывание одной и той же операции со всем списком
 
         for (auto& item : c.traders)
@@ -248,7 +257,7 @@ int main()
         //string str = to_string(fps.getFPS());
         //window.setTitle(str);
         
-
+        std::cout << __cplusplus;
 
     }
     return 0;
