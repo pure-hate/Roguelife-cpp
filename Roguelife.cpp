@@ -10,12 +10,6 @@
 #include "json.hpp"
 #include "date.h"
 
-
-
-
-
-
-
 using namespace sf;
 using namespace std;
 using namespace json;
@@ -57,14 +51,14 @@ public:
         ++mFrame;
     }
 };
-//FPS fps;
+FPS fps;
 
 template <int row, int col>
 void draw_map(int (&arr)[row][col])
 {
-    for (int i = 0; i < 20; i++) //переключение по строкам
+    for (int i = 0; i < SIZEX; i++) //переключение по строкам
     {
-        for (int j = 0; j < 20; j++)// переключение по столбцам
+        for (int j = 0; j < SIZEY; j++)// переключение по столбцам
         {
             if (arr[i][j] == 1)
             {
@@ -84,17 +78,28 @@ void draw_map(int (&arr)[row][col])
 
 int main()
 {
+    Font font;//шрифт 
+    font.loadFromFile("CyrilicOld.ttf");//передаем нашему шрифту файл шрифта
+    Text text("", font, 20);//создаем объект текст. закидываем в объект текст строку, шрифт, размер шрифта(в пикселях);//сам объект текст (не строка)
+    text.setFillColor(Color::Red);
+    text.setStyle(sf::Text::Bold | sf::Text::Underlined);//жирный и подчеркнутый текст. по умолчанию он "худой":)) и не подчеркнутый
+
     
     Sprites allsprite;
     allsprite.load();
 
-    window.setFramerateLimit(1);
+    //window.setFramerateLimit(1);
     Components c;
 
     EntityID newID = 1;
     c.positions[newID] = Position{ 4, 4 };
     c.healths[newID] = Health{ 100, 100 };
+    c.states[newID] = State{ "Idle" };
+    c.names[newID] = Name{ "Вася" };
     c.main_sprites[newID] = Main_Sprite{ "playerSprite" };
+    c.moneys[newID] = Money{ 100 };
+    c.inventories[newID] = Inventory{};
+    c.inventories[newID].Add("Beer", pair("Marka", "Zhiguli"));
     int player = 1;
     
 
@@ -120,16 +125,16 @@ int main()
     Point i; i.x = 4; i.y = 4;                
     c.paths[newID].path.push_back(i);//добавляем точку в paths
     i.x = 3; i.y = 3;
-    c.paths[newID].path.push_back(i);//добавляем точку в paths
+    c.paths[newID].path.push_back(i);
     i.x = 2; i.y = 2;                
-    c.paths[newID].path.push_back(i);//добавляем точку в paths
+    c.paths[newID].path.push_back(i);
     
     Date current_date = { 0,0,1,1,2000 };
 
  
     loadmap();
 
-    //view.setViewport(sf::FloatRect(0, 0, 0.8f, 0.8f));
+    view.setViewport(sf::FloatRect(0, 0, 1, 1));
 
     
 //главный цикл
@@ -184,10 +189,11 @@ int main()
         
         //очистим экран перед отрисовкой
         
+        
+        view.reset(sf::FloatRect(0, 0, 640.f, 480.f));
         view.setCenter(c.positions[player].x*16, c.positions[player].y*16);
-        view.reset(sf::FloatRect(0.f, 0.f, 640.f, 480.f));
-
         window.setView(view);
+
         window.clear();
 
         //рисуем сначала карту
@@ -247,17 +253,24 @@ int main()
             }
 
         }
+
+
+        std::ostringstream playerScoreString;
+        playerScoreString << c.moneys[player].amount;
+        text.setString("Денех:" + playerScoreString.str());//задает строку тексту
+        text.setPosition(view.getCenter().x-300, view.getCenter().y-200);//задаем позицию текста, центр камеры
+        window.draw(text);//рисую этот текст
         
 
         //и наконец выведем все на экран
         window.display();
 
         //счетчик фепеса
-        //fps.update();
-        //string str = to_string(fps.getFPS());
-        //window.setTitle(str);
+        fps.update();
+        string str = to_string(fps.getFPS());
+        window.setTitle(str);
         
-        std::cout << __cplusplus;
+        //std::cout << __cplusplus;
 
     }
     return 0;

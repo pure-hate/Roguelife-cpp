@@ -36,22 +36,27 @@ struct Trader
 struct Inventory
 {
 	std::vector<Item> inv;
-
-
 	template <typename T>
-	void Add(const char* str, std::pair<const char*,T*> param)
+	void Add(const char* str, std::pair<const char*, T*> param)
 	{
 		Item a;
 		a.set("Name", str);
-		
-		
-			a.set(param.first, param.second);
-		
-		
+
+
+		a.set(param.first, param.second);
+
+
 		inv.push_back(a);
 		//cout << param.first << param.second;
-	
+
 	}
+		
+		
+		
+	
+		//cout << param.first << param.second;
+	
+	
 };
 
 
