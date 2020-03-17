@@ -2,6 +2,7 @@
 
 #include "point.h"
 #include "Items.h"
+#include "images.h"
 #include <stdarg.h>
 #include <vector>
 
@@ -21,6 +22,38 @@ struct Name
 struct Money
 {
 	int amount;
+
+	void DrawMoney()
+	{
+		moneyText.setPosition(view.getCenter().x - 300, view.getCenter().y - 200);//задаем позицию текста, центр камеры
+		window.draw(moneyText);//рисую этот текст
+	}
+
+	void AddMoney(int num)
+	{
+		amount += num;
+		RefreshMoney();
+	}
+
+	void DeleteMoney(int num)
+	{
+		amount -= num;
+		RefreshMoney();
+	}
+
+	void SetMoney(int num)
+	{
+		amount = num;
+		RefreshMoney();
+	}
+
+	void RefreshMoney()
+	{
+		PlayerInvString << amount;
+		moneyText.setString("Денег: " + PlayerInvString.str());//задает строку тексту
+		PlayerInvString.str("");
+	}
+
 };
 
 struct State
@@ -36,27 +69,53 @@ struct Trader
 struct Inventory
 {
 	std::vector<Item> inv;
+
 	template <typename T>
 	void Add(const char* str, std::pair<const char*, T*> param)
 	{
 		Item a;
 		a.set("Name", str);
 
-
 		a.set(param.first, param.second);
 
-
 		inv.push_back(a);
-		//cout << param.first << param.second;
+		RefreshInv();
+	}
+
+	void RefreshInv()
+	{
+		for (int i = 0; i < inv.size(); i++)
+		{
+
+			PlayerInvString << inv[i].getstr("Name");
+			invText.setString("Предмет:" + PlayerInvString.str());//задает строку тексту
+			PlayerInvString.str("");
+		}
+	}
+
+	void DrawInv()
+	{
+		
+		for (int i = 0; i < inv.size(); i++)
+		{
+			invText.setPosition(view.getCenter().x - 300, view.getCenter().y - (180 - 20 * i));//задаем позицию текста, центр камеры
+			window.draw(invText);//рисую этот текст
+		}
 
 	}
-		
-		
-		
-	
-		//cout << param.first << param.second;
-	
-	
+
+	int Find(const char* str)
+	{
+		for (int i = 0; i < inv.size(); i++)
+		{
+			if (inv[i].getstr("Name") == str)
+			{
+				return i;
+			}
+		}
+		return -1;
+
+	}
 };
 
 

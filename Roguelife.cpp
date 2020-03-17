@@ -15,7 +15,8 @@ using namespace std;
 using namespace json;
 
 RenderWindow window(VideoMode(640, 480), "RogueLife");
-sf::View view;
+sf::View view(sf::FloatRect(0, 0, 640.f, 480.f));
+
 
 
 #include "components.h"
@@ -78,17 +79,23 @@ void draw_map(int (&arr)[row][col])
 
 int main()
 {
-    Font font;//шрифт 
-    font.loadFromFile("CyrilicOld.ttf");//передаем нашему шрифту файл шрифта
-    Text text("", font, 20);//создаем объект текст. закидываем в объект текст строку, шрифт, размер шрифта(в пикселях);//сам объект текст (не строка)
-    text.setFillColor(Color::Red);
-    text.setStyle(sf::Text::Bold | sf::Text::Underlined);//жирный и подчеркнутый текст. по умолчанию он "худой":)) и не подчеркнутый
+    //шрифты
+    Font font;
+    font.loadFromFile("CyrilicOld.ttf");
 
+    Text text("", font, 20);
+    text.setFillColor(Color::Red);
+    text.setStyle(sf::Text::Bold | sf::Text::Underlined);
     
+    Text text2("", font, 20);
+    text2.setFillColor(Color::Red);
+    text2.setStyle(sf::Text::Bold | sf::Text::Underlined);
+
+    //спрайты
     Sprites allsprite;
     allsprite.load();
 
-    //window.setFramerateLimit(1);
+    window.setFramerateLimit(4);
     Components c;
 
     EntityID newID = 1;
@@ -98,8 +105,13 @@ int main()
     c.names[newID] = Name{ "Вася" };
     c.main_sprites[newID] = Main_Sprite{ "playerSprite" };
     c.moneys[newID] = Money{ 100 };
+    c.moneys[newID].AddMoney(20);
+
     c.inventories[newID] = Inventory{};
     c.inventories[newID].Add("Beer", pair("Marka", "Zhiguli"));
+    c.inventories[newID].Add("Beer", pair("Marka", "Zhiguli"));
+    c.inventories[newID].Add("Beer", pair("Marka", "Zhiguli"));
+
     int player = 1;
     
 
@@ -114,9 +126,10 @@ int main()
     c.main_sprites[newID] = Main_Sprite{ "humanSprite" };
 
     c.traders[newID] = Trader{ "grocery" };
-    c.states[newID] = State{ "Idle" };
+    c.states[newID] = State{ "Idle2" };
     c.names[newID] = Name{ "Вася" };
     c.moneys[newID] = Money{ 100 };
+    
 
     c.inventories[newID] = Inventory{};
     c.inventories[newID].Add("Beer", pair("Marka", "Zhiguli"));
@@ -135,7 +148,7 @@ int main()
     loadmap();
 
     view.setViewport(sf::FloatRect(0, 0, 1, 1));
-
+    
     
 //главный цикл
     while (window.isOpen()) 
@@ -151,20 +164,36 @@ int main()
         if (Keyboard::isKeyPressed(Keyboard::Down)) 
         {
             if (global_map[c.positions[player].x][c.positions[player].y + 1] == 0) 
-            { c.positions[player].y += 1; }
+            { 
+                c.positions[player].y += 1;
+                view.setCenter(c.positions[player].x * 16, c.positions[player].y * 16);
+                window.setView(view);
+            }
         }
         if (Keyboard::isKeyPressed(Keyboard::Up)) 
         {
             if (global_map[c.positions[player].x][c.positions[player].y - 1] == 0)
-            c.positions[player].y -= 1; 
+            {
+                c.positions[player].y -= 1;
+                view.setCenter(c.positions[player].x * 16, c.positions[player].y * 16);
+                window.setView(view);
+            }
         }
         if (Keyboard::isKeyPressed(Keyboard::Left)) { 
-            if (global_map[c.positions[player].x-1][c.positions[player].y] == 0)
-            c.positions[player].x -= 1; 
+            if (global_map[c.positions[player].x - 1][c.positions[player].y] == 0)
+            {
+                c.positions[player].x -= 1;
+                view.setCenter(c.positions[player].x * 16, c.positions[player].y * 16);
+                window.setView(view);
+            }
         }
         if (Keyboard::isKeyPressed(Keyboard::Right)) { 
-            if (global_map[c.positions[player].x+1][c.positions[player].y ] == 0)
-            c.positions[player].x += 1;
+            if (global_map[c.positions[player].x + 1][c.positions[player].y] == 0)
+            {
+                c.positions[player].x += 1;
+                view.setCenter(c.positions[player].x * 16, c.positions[player].y * 16);
+                window.setView(view);
+            }
         }
 
         
@@ -186,13 +215,17 @@ int main()
             load(c_ptr);
            
         }
+
+        if (Keyboard::isKeyPressed(Keyboard::F1)) //пиво накидываем при нажатии
+        {
+            c.inventories[player].Add("Beer", pair("Marka", "Zhiguli"));  
+        }
         
         //очистим экран перед отрисовкой
         
         
-        view.reset(sf::FloatRect(0, 0, 640.f, 480.f));
-        view.setCenter(c.positions[player].x*16, c.positions[player].y*16);
-        window.setView(view);
+        
+        
 
         window.clear();
 
@@ -211,26 +244,35 @@ int main()
                 int& y = c.positions[item.first].y;
                 vector<Point>& path = c.paths[item.first].path;
 
-
-
                 x = path[0].x;
                 y = path[0].y;
                 
-                cout << x << " " << y << " " << path[0].x << " " << path[0].y;
+                //cout << x << " " << y << " " << path[0].x << " " << path[0].y;
                 
                 path.erase(path.begin());
 
                 
                 
             }
-            else
+            else if (c.paths[item.first].path.empty() == true)
             {
-                if (c.states[item.first].state == "Idle")
+                
+                if (c.states[item.first].state == "Idle"s)
+                {
+                    
+                    vector<Point>& new_path = c.paths[item.first].path;
+                    c.states[item.first] = State{ "Idle2" };
+                    SearchWay(global_map, new_path, c.positions[item.first].x, c.positions[item.first].y, 15, 10);
+               
+                }
+                else if (c.states[item.first].state == "Idle2"s)
                 {
                     vector<Point>& new_path = c.paths[item.first].path;
-                    SearchWay(global_map, new_path , c.positions[item.first].x, c.positions[item.first].y, 10, 10);
                     
+                    SearchWay(global_map, new_path , c.positions[item.first].x, c.positions[item.first].y, 1, 1);
+                    c.states[item.first] = State{ "Idle" };
                 }
+
             }
         }
 
@@ -254,12 +296,9 @@ int main()
 
         }
 
-
-        std::ostringstream playerScoreString;
-        playerScoreString << c.moneys[player].amount;
-        text.setString("Денех:" + playerScoreString.str());//задает строку тексту
-        text.setPosition(view.getCenter().x-300, view.getCenter().y-200);//задаем позицию текста, центр камеры
-        window.draw(text);//рисую этот текст
+        c.moneys[player].DrawMoney();
+        c.inventories[player].DrawInv();
+        
         
 
         //и наконец выведем все на экран

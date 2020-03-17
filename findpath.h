@@ -9,7 +9,7 @@ void SearchWay(T* map, S& path , int x, int y, int x_to, int y_to)
 
 
 
-	const int size = 50;
+	const int size = 40;
 	int matrix[size][size][3];
 
 	int step;
@@ -118,7 +118,7 @@ void SearchWay(T* map, S& path , int x, int y, int x_to, int y_to)
 		while (matrix[_i][_j][0] != 0)
 		{
 			//std::cout << std::endl;
-			//std::cout << _i << " " << _j << std::endl;
+			
 
 			//Point point2;
 			//point2.x = _i;

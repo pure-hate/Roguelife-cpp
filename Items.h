@@ -10,12 +10,12 @@
     class Item
     {
 
-        std::unordered_map<std::string, int> values;
-        std::unordered_map<std::string, std::string> strings;
-        std::unordered_map<std::string, bool> bools;
 
     public:
 
+        std::unordered_map<std::string, int> values;
+        std::unordered_map<std::string, std::string> strings;
+        std::unordered_map<std::string, bool> bools;
         void set(std::string str, int integer)
         {
             values[str] = integer;
@@ -55,6 +55,8 @@
         {
             return values[str];
         }
+
+
 
 
     };

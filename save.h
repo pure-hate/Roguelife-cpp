@@ -26,6 +26,27 @@ void save(Components& c)
         obj[to_string(item.first)]["State"] = item.second.state;
     }
 
+    for (auto& item : c.inventories)
+    {
+        for (auto& item2 : item.second.inv)
+        {
+            for (auto& item3 : item2.bools)
+            {
+                obj[to_string(item.first)]["Inventory"]["Bools"][item3.first] = item3.second;
+            }
+            for (auto& item3 : item2.values)
+            {
+                obj[to_string(item.first)]["Inventory"]["Values"][item3.first] = item3.second;
+            }
+            for (auto& item3 : item2.strings)
+            {
+                obj[to_string(item.first)]["Inventory"]["Values"][item3.first] = item3.second;
+            }
+
+        }
+        
+    }
+
     for (auto& item : c.traders)
     {
 
