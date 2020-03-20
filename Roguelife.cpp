@@ -9,6 +9,7 @@
 #include "findpath.h"
 #include "json.hpp"
 #include "date.h"
+#include "Constants.h"
 
 using namespace sf;
 using namespace std;
@@ -16,8 +17,6 @@ using namespace json;
 
 RenderWindow window(VideoMode(640, 480), "RogueLife");
 sf::View view(sf::FloatRect(0, 0, 640.f, 480.f));
-
-
 
 #include "components.h"
 #include "save.h"
@@ -95,7 +94,7 @@ int main()
     Sprites allsprite;
     allsprite.load();
 
-    window.setFramerateLimit(4);
+    window.setFramerateLimit(MAXFPS);
     Components c;
 
     EntityID newID = 1;
@@ -109,8 +108,12 @@ int main()
 
     c.inventories[newID] = Inventory{};
     c.inventories[newID].Add("Beer", pair("Marka", "Zhiguli"));
-    c.inventories[newID].Add("Beer", pair("Marka", "Zhiguli"));
-    c.inventories[newID].Add("Beer", pair("Marka", "Zhiguli"));
+    c.inventories[newID].Add("Beer", pair("Marka", "Zhiguli2"));
+    c.inventories[newID].Add("Beer", pair("Marka", "Zhiguli3"));
+
+    int id = c.inventories[newID].Find("Beer");
+    c.inventories[newID].Set(id, "Name", "beer23");
+
 
     int player = 1;
     
@@ -133,6 +136,7 @@ int main()
 
     c.inventories[newID] = Inventory{};
     c.inventories[newID].Add("Beer", pair("Marka", "Zhiguli"));
+    
 
 
     Point i; i.x = 4; i.y = 4;                

@@ -159,6 +159,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="components.h" />
+    <ClInclude Include="Constants.h" />
     <ClInclude Include="date.h" />
     <ClInclude Include="findpath.h" />
     <ClInclude Include="images.h" />

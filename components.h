@@ -49,9 +49,9 @@ struct Money
 
 	void RefreshMoney()
 	{
-		PlayerInvString << amount;
-		moneyText.setString("ƒенег: " + PlayerInvString.str());//задает строку тексту
-		PlayerInvString.str("");
+		PlayerMonString << amount;
+		moneyText.setString("ƒенег: " + PlayerMonString.str());//задает строку тексту
+		PlayerMonString.str("");
 	}
 
 };
@@ -69,6 +69,7 @@ struct Trader
 struct Inventory
 {
 	std::vector<Item> inv;
+	string invString;
 
 	template <typename T>
 	void Add(const char* str, std::pair<const char*, T*> param)
@@ -79,29 +80,24 @@ struct Inventory
 		a.set(param.first, param.second);
 
 		inv.push_back(a);
+
 		RefreshInv();
 	}
 
 	void RefreshInv()
 	{
+		invString = "";
 		for (int i = 0; i < inv.size(); i++)
 		{
-
-			PlayerInvString << inv[i].getstr("Name");
-			invText.setString("ѕредмет:" + PlayerInvString.str());//задает строку тексту
-			PlayerInvString.str("");
+			invString += inv[i].getstr("Name") + "\n";			
 		}
 	}
 
 	void DrawInv()
 	{
-		
-		for (int i = 0; i < inv.size(); i++)
-		{
-			invText.setPosition(view.getCenter().x - 300, view.getCenter().y - (180 - 20 * i));//задаем позицию текста, центр камеры
+			invText.setString(invString);
+			invText.setPosition(view.getCenter().x - 300, view.getCenter().y - (180 - 20 ));//задаем позицию текста, центр камеры
 			window.draw(invText);//рисую этот текст
-		}
-
 	}
 
 	int Find(const char* str)
@@ -115,6 +111,12 @@ struct Inventory
 		}
 		return -1;
 
+	}
+	template <typename T>
+	void Set(int id, string str, T* param)
+	{
+		inv[id].set(str, param);
+		RefreshInv();
 	}
 };
 

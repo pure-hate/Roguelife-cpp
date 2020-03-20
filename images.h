@@ -7,6 +7,7 @@ Text invText;
 Text moneyText;
 
 std::ostringstream PlayerInvString;
+std::ostringstream PlayerMonString;
 
 Image wallImage;
 Texture wallTexture;
