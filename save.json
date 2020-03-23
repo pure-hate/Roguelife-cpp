@@ -5,18 +5,18 @@
       "1" : {
         "Strings" : {
           "Marka" : "Zhiguli",
-          "Name" : "Beer"
+          "Name" : "beer23"
         }
       },
       "2" : {
         "Strings" : {
-          "Marka" : "Zhiguli",
+          "Marka" : "Zhiguli2",
           "Name" : "Beer"
         }
       },
       "3" : {
         "Strings" : {
-          "Marka" : "Zhiguli",
+          "Marka" : "Zhiguli3",
           "Name" : "Beer"
         }
       }
@@ -24,8 +24,8 @@
     "MainSprites" : "playerSprite",
     "Money" : 120,
     "Name" : "Вася",
-    "Position" : [4, 4],
-    "State" : "Idle"
+    "Position" : [30, 21],
+    "State" : ""
   },
   "2" : {
     "Health" : [100, 100],
@@ -45,9 +45,8 @@
     "MainSprites" : "humanSprite",
     "Money" : 100,
     "Name" : "Вася",
-    "Path" : [1, 8, 1, 9, 1, 10, 2, 10, 3, 10, 4, 10, 5, 10, 6, 10, 7, 10, 8, 10, 9, 10, 10, 10, 11, 10, 12, 10, 13, 10, 14, 10],
-    "Position" : [1, 7],
-    "State" : "Idle2",
+    "Position" : [14, 10],
+    "State" : "",
     "Trader" : "grocery"
   }
 }

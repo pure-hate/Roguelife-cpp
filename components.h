@@ -146,6 +146,19 @@ struct Health
 	int current;
 };
 
+struct Energy
+{
+	int max;
+	int current;
+};
+
+struct Food
+{
+	int ccal;
+	int carb;
+	int fat;
+	int prot;
+};
 
 using EntityID = int64_t;
 

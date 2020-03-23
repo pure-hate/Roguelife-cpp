@@ -161,13 +161,16 @@
     <ClInclude Include="components.h" />
     <ClInclude Include="Constants.h" />
     <ClInclude Include="date.h" />
+    <ClInclude Include="DrawMap.h" />
     <ClInclude Include="findpath.h" />
+    <ClInclude Include="fps.h" />
     <ClInclude Include="images.h" />
     <ClInclude Include="Items.h" />
     <ClInclude Include="json.hpp" />
     <ClInclude Include="map.h" />
     <ClInclude Include="point.h" />
     <ClInclude Include="save.h" />
+    <ClInclude Include="Update.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

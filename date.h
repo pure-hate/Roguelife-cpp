@@ -30,6 +30,7 @@ struct Date
 
 	void get_time()
 	{
+		
 		std::cout << std::endl << (int)hour << "." << (int)minute << "  " << (int)day << "." << (int)month << "." << year << std::endl;
 	}
 		 
