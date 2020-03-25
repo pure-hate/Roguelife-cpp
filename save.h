@@ -23,7 +23,7 @@ void save(Components& c)
     for (auto& item : c.states)
     {
 
-        obj[to_string(item.first)]["State"] = item.second.state;
+        obj[to_string(item.first)]["State"] = item.second.Get();
     }
     int i = 1;
     for (auto& item : c.inventories)
@@ -122,7 +122,7 @@ void load(Components& c)
 
     obj = JSON::Load(a);
 
-    cout << obj << " JSON";
+    //cout << obj << " JSON";
     for (auto& j : obj.ObjectRange())
     {
         //j.first - ID персонажа
@@ -137,22 +137,22 @@ void load(Components& c)
 
         if (j.second.hasKey("State")) //проверяем наличие ключей
         {
-
-            c.states[stoi(j.first)].state = obj[j.first]["State"].ToString();
+            c.states[stoi(j.first)].Set(obj[j.first]["State"].ToString());
+           // c.states[stoi(j.first)] = State{ obj[j.first]["State"].ToString() };
 
         }
 
         if (j.second.hasKey("Name")) //проверяем наличие ключей
         {
 
-            c.states[stoi(j.first)].state = obj[j.first]["Name"].ToString();
+            c.names[stoi(j.first)].name = obj[j.first]["Name"].ToString();
 
         }
 
         if (j.second.hasKey("Money")) //проверяем наличие ключей
         {
 
-            c.states[stoi(j.first)].state = obj[j.first]["Money"].ToString();
+            c.moneys[stoi(j.first)].amount = obj[j.first]["Money"].ToInt();
 
         }
 
@@ -162,6 +162,29 @@ void load(Components& c)
         {
 
             c.traders[stoi(j.first)].type = obj[j.first]["Trader"].ToString();
+
+        }
+
+        if (j.second.hasKey("Inventory")) //проверяем наличие ключей
+        {
+
+            c.inventories[stoi(j.first)].inv.clear();
+            for (auto& i : j.second["Inventory"].ObjectRange())
+            {
+                //перебираем каждый предмет
+                //c.inventories[stoi(j.first)].Add("Beer", pair("Marka", "Zhiguli"));
+                for (auto& k : i.second.ObjectRange())
+                {
+                    for (auto& l : k.second.ObjectRange())
+                    {
+                        //и каждый параметр
+                        cout << l.first << " " << l.second << endl;
+                    }
+                }
+
+                cout << endl << endl;
+            }
+
 
         }
 

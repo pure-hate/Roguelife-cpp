@@ -6,6 +6,9 @@
         "Strings" : {
           "Marka" : "Zhiguli",
           "Name" : "beer23"
+        },
+        "Values" : {
+          "Volume" : 500
         }
       },
       "2" : {
@@ -24,8 +27,8 @@
     "MainSprites" : "playerSprite",
     "Money" : 120,
     "Name" : "Вася",
-    "Position" : [30, 21],
-    "State" : ""
+    "Position" : [4, 4],
+    "State" : "Idle"
   },
   "2" : {
     "Health" : [100, 100],
@@ -45,8 +48,9 @@
     "MainSprites" : "humanSprite",
     "Money" : 100,
     "Name" : "Вася",
+    "Path" : [14, 10, 13, 10, 12, 10, 11, 10, 10, 10, 9, 10, 8, 10, 7, 10, 6, 10, 5, 10, 4, 10, 3, 10, 2, 10, 1, 10, 1, 9, 1, 8, 1, 7, 1, 6, 1, 5, 1, 4, 1, 3, 1, 2],
     "Position" : [14, 10],
-    "State" : "",
+    "State" : "Idle",
     "Trader" : "grocery"
   }
 }

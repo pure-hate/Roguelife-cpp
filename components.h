@@ -59,6 +59,14 @@ struct Money
 struct State
 {
 	string state;
+	void Set(string str)
+	{
+		state = str;
+	}
+	string Get()
+	{
+		return state;
+	}
 };
 
 struct Trader
@@ -114,6 +122,12 @@ struct Inventory
 	}
 	template <typename T>
 	void Set(int id, string str, T* param)
+	{
+		inv[id].set(str, param);
+		RefreshInv();
+	}
+
+	void Set(int id, string str, int param)
 	{
 		inv[id].set(str, param);
 		RefreshInv();

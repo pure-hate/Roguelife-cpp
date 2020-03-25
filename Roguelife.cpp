@@ -2,7 +2,6 @@
 #include <iostream>
 #include <sstream>
 #include <stdio.h>
-#include <list>
 #include <unordered_map>
 #include "images.h"
 #include "map.h"
@@ -10,7 +9,6 @@
 #include "json.hpp"
 #include "date.h"
 #include "Constants.h"
-
 
 using namespace sf;
 using namespace std;
@@ -66,6 +64,8 @@ int main()
 
     int id = c.inventories[newID].Find("Beer");
     c.inventories[newID].Set(id, "Name", "beer23");
+    c.inventories[newID].Set(id, "Volume", 500);
+
 
 
     int player = 1;

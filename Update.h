@@ -113,7 +113,8 @@ void Update(Components& c, Date& current_date, int& player)
             {
 
                 vector<Point>& new_path = c.paths[item.first].path;
-                c.states[item.first] = State{ "Idle2" };
+                //c.states[item.first] = State{ "Idle2" };
+                c.states[item.first].Set("Idle2");
                 SearchWay(global_map, new_path, c.positions[item.first].x, c.positions[item.first].y, 15, 10);
 
             }
@@ -122,7 +123,8 @@ void Update(Components& c, Date& current_date, int& player)
                 vector<Point>& new_path = c.paths[item.first].path;
 
                 SearchWay(global_map, new_path, c.positions[item.first].x, c.positions[item.first].y, 1, 1);
-                c.states[item.first] = State{ "Idle" };
+                //c.states[item.first] = State{ "Idle" };
+                c.states[item.first].Set("Idle");
             }
 
         }
